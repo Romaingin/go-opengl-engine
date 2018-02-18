@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"runtime"
-	"go-opengl-engine/element"
-	"go-opengl-engine/input"
+	"github.com/Romaingin/go-opengl-engine/element"
+	"github.com/Romaingin/go-opengl-engine/input"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
 )

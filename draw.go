@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-opengl-engine/object"
+	"github.com/Romaingin/go-opengl-engine/object"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 

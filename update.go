@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-opengl-engine/input"
+	"github.com/Romaingin/go-opengl-engine/input"
 	"github.com/go-gl/glfw/v3.2/glfw"
 	// mgl "github.com/go-gl/mathgl/mgl32"
 )

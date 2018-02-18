@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-opengl-engine/element"
+	"github.com/Romaingin/go-opengl-engine/element"
 	"github.com/go-gl/glfw/v3.2/glfw"
 )
 

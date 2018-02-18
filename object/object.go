@@ -1,7 +1,7 @@
 package object
 
 import (
-	"go-opengl-engine/vao"
+	"github.com/Romaingin/go-opengl-engine/vao"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	mgl "github.com/go-gl/mathgl/mgl32"
 )

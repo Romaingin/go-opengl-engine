@@ -1,7 +1,7 @@
 package element
 
 import (
-	"go-opengl-engine/object"
+	"github.com/Romaingin/go-opengl-engine/object"
 )
 
 type ElementInterface interface {
