@@ -87,7 +87,7 @@ func initGlfw() *glfw.Window {
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
 	// Create Window
-	window, err := glfw.CreateWindow(500, 500, "OpenGL GO Engine", nil, nil)
+	window, err := glfw.CreateWindow(windowWidth, windowHeight, "OpenGL GO Engine", nil, nil)
 	check(err)
 	window.MakeContextCurrent()
 

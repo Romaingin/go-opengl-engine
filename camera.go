@@ -13,6 +13,7 @@ type Camera struct {
 	// Vision
 	eye mgl.Vec3
 	aim mgl.Vec3
+	up mgl.Vec3
 
 	// Uniforms
 	projectionUniform int32
@@ -24,6 +25,7 @@ func (cam *Camera) init(program uint32) {
 	// Vectors
 	cam.eye = mgl.Vec3{5,0.5,5}
 	cam.aim = mgl.Vec3{-1,0,-1}.Normalize()
+	cam.up = mgl.Vec3{0,1,0}
 
 	// Uniforms
 	cam.projectionUniform = gl.GetUniformLocation(program, gl.Str("projection\x00"))
@@ -37,7 +39,7 @@ func (cam *Camera) init(program uint32) {
 func (cam *Camera) computeProjection() {
 	cam.projection = mgl.Perspective(
 		mgl.DegToRad(45.0),
-		float32(500)/float32(500),
+		float32(windowWidth)/float32(windowHeight),
 		0.1,
 		100.0)
 
@@ -48,11 +50,19 @@ func (cam *Camera) computeView() {
 	cam.view = mgl.LookAtV(
 		cam.eye,
 		cam.eye.Add(cam.aim),
-		mgl.Vec3{0, 1, 0})
+		cam.up)
 
 	gl.UniformMatrix4fv(cam.viewUniform, 1, false, &cam.view[0])
 }
 
 func (cam *Camera) rotateY(angle float32) {
 	cam.aim = mgl.Rotate3DY(angle).Mul3x1(cam.aim)
+}
+
+func (cam *Camera) MoveForward(step float32) {
+	cam.eye = cam.eye.Add(cam.aim.Mul(step))
+}
+
+func (cam *Camera) MoveSide(step float32) {
+	cam.eye = cam.eye.Add(cam.aim.Cross(cam.up).Mul(step))
 }
