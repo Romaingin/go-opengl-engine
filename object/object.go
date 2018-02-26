@@ -27,8 +27,7 @@ type Geometry struct {
 
 func (o *Object) Create(program uint32, g Geometry) {
 	// Create the Array Object based on the mesh
-	// o.vao = vao.MakeIndexed(program, g.vertices, g.normals)
-	o.vao = vao.Make(g.vertices)
+	o.vao = vao.MakeIndexed(g.vertices, g.normals)
 	o.triCount = int32(len(g.vertices) / 3)
 
 	// Model matrix
