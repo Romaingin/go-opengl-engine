@@ -22,27 +22,8 @@ func Make(points []float32) uint32 {
 }
 
 // returns a vertex array from the points provided
-func MakeIndexed(program uint32, pointss []float32) uint32 {
-	points := []float32{
-		1.0,	1.0,	0.0,
-		0.0,	0.0,	0.0,
-		1.0,	0.0,	0.0,
-		1.0,	1.0,	0.0,
-		1.0,	0.0,	0.0,
-		1.0,	0.0,	-1.0,
-	}
-	// pointsIndices := []uint32{0, 1, 2}
-
-	normals := []float32{
-		0.0,	0.0,	1.0,
-		0.0,	0.0,	1.0,
-		0.0,	0.0,	1.0,
-		1.0,	0.0,	0.0,
-		1.0,	0.0,	0.0,
-		1.0,	0.0,	0.0,
-	}
-	// normalsIndices := []uint32{0, 0, 0}
-
+func MakeIndexed(program uint32, points []float32, normals []float32) uint32 {
+	// Get attribute locations
 	vert, free := gl.Strs("vert")
 	defer free()
 	vertexAttribVert := uint32(gl.GetAttribLocation(program, *vert))
@@ -50,6 +31,7 @@ func MakeIndexed(program uint32, pointss []float32) uint32 {
 	defer free()
 	vertexAttribNorm := uint32(gl.GetAttribLocation(program, *norm))
 
+	// Create VAO buffer
 	var VAO uint32
 	gl.GenVertexArrays(1, &VAO)
 	gl.BindVertexArray(VAO)
@@ -59,6 +41,7 @@ func MakeIndexed(program uint32, pointss []float32) uint32 {
 	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, pointsEBO)
 	// gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, 4*len(pointsIndices), gl.Ptr(pointsIndices), gl.STATIC_DRAW)
 
+	// Create Points VBO buffer
 	var pointsVBO uint32
 	gl.GenBuffers(1, &pointsVBO)
 	gl.BindBuffer(gl.ARRAY_BUFFER, pointsVBO)
@@ -71,6 +54,7 @@ func MakeIndexed(program uint32, pointss []float32) uint32 {
 	// gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, normalsEBO)
 	// gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, 4*len(normalsIndices), gl.Ptr(normalsIndices), gl.STATIC_DRAW)
 
+	// Create Normals VBO buffer
 	var normalsVBO uint32
 	gl.GenBuffers(1, &normalsVBO)
 	gl.BindBuffer(gl.ARRAY_BUFFER, normalsVBO)

@@ -46,8 +46,8 @@ func main() {
 
 	// Create elements to be drawn
 	elements := make([]element.Element, 2)
-	elements[0].Create(program, cubeVertices)
-	elements[1].Create(program, floor)
+	elements[0].CreateFromFile(program, "lib/mesh/cube.obj")
+	elements[1].CreateFromFile(program, "lib/mesh/floor.obj")
 
 	// Create main scene
 	var scene = Scene{window, &clock, &camera, program, elements}
@@ -100,72 +100,4 @@ func initGlfw() *glfw.Window {
 	input.Init(window.GetCursorPos())
 
 	return window
-}
-
-var (
-	triangle = []float32{
-		0.0,	0.5,	0.0,
-		-0.5,	-0.5,	0.0,
-		0.5,	-0.5,	0.0,
-	}
-
-	floor = []float32{
-		-6.0,	0.0,	-6.0,
-		-6.0,	0.0,	6.0,
-		6.0,	0.0,	6.0,
-		-6.0,	0.0,	-6.0,
-		6.0,	0.0,	6.0,
-		6.0,	0.0,	-6.0,
-	}
-)
-
-var cubeVertices = []float32{
-	//  X, Y, Z, U, V
-	// Bottom
-	-1.0, -1.0, -1.0,
-	1.0, -1.0, -1.0,
-	-1.0, -1.0, 1.0,
-	1.0, -1.0, -1.0,
-	1.0, -1.0, 1.0,
-	-1.0, -1.0, 1.0,
-
-	// Top
-	-1.0, 1.0, -1.0,
-	-1.0, 1.0, 1.0,
-	1.0, 1.0, -1.0,
-	1.0, 1.0, -1.0,
-	-1.0, 1.0, 1.0,
-	1.0, 1.0, 1.0,
-
-	// Front
-	-1.0, -1.0, 1.0,
-	1.0, -1.0, 1.0,
-	-1.0, 1.0, 1.0,
-	1.0, -1.0, 1.0,
-	1.0, 1.0, 1.0,
-	-1.0, 1.0, 1.0,
-
-	// Back
-	-1.0, -1.0, -1.0,
-	-1.0, 1.0, -1.0,
-	1.0, -1.0, -1.0,
-	1.0, -1.0, -1.0,
-	-1.0, 1.0, -1.0,
-	1.0, 1.0, -1.0,
-
-	// Left
-	-1.0, -1.0, 1.0,
-	-1.0, 1.0, -1.0,
-	-1.0, -1.0, -1.0,
-	-1.0, -1.0, 1.0,
-	-1.0, 1.0, 1.0,
-	-1.0, 1.0, -1.0,
-
-	// Right
-	1.0, -1.0, 1.0,
-	1.0, -1.0, -1.0,
-	1.0, 1.0, -1.0,
-	1.0, -1.0, 1.0,
-	1.0, 1.0, -1.0,
-	1.0, 1.0, 1.0,
 }

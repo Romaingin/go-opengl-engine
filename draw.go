@@ -32,5 +32,5 @@ func drawObject(o object.ObjectInterface) {
 
 	// Draw buffer's content
 	gl.BindVertexArray(o.GetVAO())
-	gl.DrawArrays(gl.TRIANGLES, 0, 6)
+	gl.DrawArrays(gl.TRIANGLES, 0, o.GetTriCount())
 }

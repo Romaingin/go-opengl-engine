@@ -20,11 +20,16 @@ type Object struct {
 	triCount int32
 }
 
-func (o *Object) Create(program uint32, mesh []float32) {
+type Geometry struct {
+	vertices []float32
+	normals []float32
+}
+
+func (o *Object) Create(program uint32, g Geometry) {
 	// Create the Array Object based on the mesh
-	// o.vao = vao.Make(mesh)
-	o.vao = vao.MakeIndexed(program, mesh)
-	o.triCount = int32(len(mesh) / 3)
+	// o.vao = vao.MakeIndexed(program, g.vertices, g.normals)
+	o.vao = vao.Make(g.vertices)
+	o.triCount = int32(len(g.vertices) / 3)
 
 	// Model matrix
 	o.modelMatrix = mgl.Ident4()

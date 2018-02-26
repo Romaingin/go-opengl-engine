@@ -12,8 +12,15 @@ type Element struct {
 	object object.Object
 }
 
-func (e *Element) Create(program uint32, mesh []float32) {
-	e.object.Create(program, mesh)
+func (e *Element) Create(program uint32, g object.Geometry) {
+	e.object.Create(program, g)
+}
+
+func (e *Element) CreateFromFile(program uint32, filePath string) {
+	geometry, err := object.LoadGeometryFormFile(filePath)
+	check(err)
+
+	e.object.Create(program, geometry)
 }
 
 func (e Element) GetObject() object.Object {
