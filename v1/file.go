@@ -1,23 +1,26 @@
-package object
+package engine
 
 import (
 	"os"
+
+	"github.com/rginestou/check"
 	"github.com/sheenobu/go-obj/obj"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
+// Geometry ...
+type Geometry struct {
+	vertices []float32
+	normals  []float32
 }
 
+// LoadGeometryFormFile ...
 func LoadGeometryFormFile(filePath string) (Geometry, error) {
 	// load our OBJ
 	f, err := os.Open(filePath)
-	check(err)
+	check.Panic(err)
 
 	o, err := obj.NewReader(f).Read()
-	check(err)
+	check.Log(err)
 
 	// New geometry to handle vertices and normals
 	var g Geometry
@@ -29,13 +32,12 @@ func LoadGeometryFormFile(filePath string) (Geometry, error) {
 			nx := p.Normal
 
 			g.normals = append(g.normals,
-				[]float32{ float32(nx.Z), float32(nx.Y), float32(nx.X) }...)
+				[]float32{float32(nx.Z), float32(nx.Y), float32(nx.X)}...)
 
 			g.vertices = append(g.vertices,
-				[]float32{ float32(vx.Z), float32(vx.Y), float32(vx.X) }...)
+				[]float32{float32(vx.Z), float32(vx.Y), float32(vx.X)}...)
 		}
 	}
-
 
 	// var g Geometry
 	// g.vertices = []float32{

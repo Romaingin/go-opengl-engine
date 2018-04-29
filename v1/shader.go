@@ -1,16 +1,18 @@
-package main
+package engine
 
 import (
 	"fmt"
-	"github.com/go-gl/gl/v4.1-core/gl"
 	"io/ioutil"
 	"strings"
+
+	"github.com/go-gl/gl/v4.1-core/gl"
+	"github.com/rginestou/check"
 )
 
 // Load a file given its name
 func loadShaderFile(fileName string) string {
 	dat, err := ioutil.ReadFile(fileName)
-	check(err)
+	check.LogAndPanic(err)
 
 	return string(dat)
 }
@@ -39,19 +41,15 @@ func compileShader(source string, shaderType uint32) (uint32, error) {
 	return shader, nil
 }
 
-// Load the shader files and create a OpenGL program
-func createShaderProgram() (uint32, error) {
-	vertexShaderSource := loadShaderFile("shaders/basic_vertex.glsl") + "\x00"
+// CreateShaderProgram load the shader files and create a OpenGL program
+func CreateShaderProgram(vertexPath, fragmentPath string) uint32 {
+	vertexShaderSource := loadShaderFile(vertexPath) + "\x00"
 	vertexShader, err := compileShader(vertexShaderSource, gl.VERTEX_SHADER)
-	if err != nil {
-		return 0, err
-	}
+	check.Panic(err)
 
-	fragmentShaderSource := loadShaderFile("shaders/basic_fragment.glsl") + "\x00"
+	fragmentShaderSource := loadShaderFile(fragmentPath) + "\x00"
 	fragmentShader, err := compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER)
-	if err != nil {
-		return 0, err
-	}
+	check.Panic(err)
 
 	program := gl.CreateProgram()
 
@@ -69,11 +67,11 @@ func createShaderProgram() (uint32, error) {
 		log := strings.Repeat("\x00", int(logLength+1))
 		gl.GetProgramInfoLog(program, logLength, nil, gl.Str(log))
 
-		return 0, fmt.Errorf("failed to link program: %v", log)
+		panic(fmt.Errorf("failed to link program: %v", log))
 	}
 
 	gl.DeleteShader(vertexShader)
 	gl.DeleteShader(fragmentShader)
 
-	return program, nil
+	return program
 }

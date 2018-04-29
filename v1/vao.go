@@ -1,11 +1,11 @@
-package vao
+package engine
 
 import (
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
 // returns a vertex array from the vertices provided
-func Make(vertices []float32) uint32 {
+func makeVAO(vertices []float32) uint32 {
 	var vbo uint32
 	gl.GenBuffers(1, &vbo)
 	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
@@ -22,7 +22,7 @@ func Make(vertices []float32) uint32 {
 }
 
 // returns a vertex array from the vertices provided
-func MakeIndexed(vertices []float32, normals []float32) uint32 {
+func makeIndexedVAO(vertices []float32, normals []float32) uint32 {
 	// Create VAO buffer
 	var VAO uint32
 	gl.GenVertexArrays(1, &VAO)
