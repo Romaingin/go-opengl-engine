@@ -8,24 +8,24 @@ import (
 type Camera struct {
 	// Matrices
 	projection mgl.Mat4
-	view mgl.Mat4
+	view       mgl.Mat4
 
 	// Vision
 	eye mgl.Vec3
 	aim mgl.Vec3
-	up mgl.Vec3
+	up  mgl.Vec3
 
 	// Uniforms
 	projectionUniform int32
-	viewUniform int32
+	viewUniform       int32
 }
 
 // Init all the fields
 func (cam *Camera) init(program uint32) {
 	// Vectors
-	cam.eye = mgl.Vec3{5,0.5,5}
-	cam.aim = mgl.Vec3{-1,0,-1}.Normalize()
-	cam.up = mgl.Vec3{0,1,0}
+	cam.eye = mgl.Vec3{5, 0.5, 5}
+	cam.aim = mgl.Vec3{-1, 0, -1}.Normalize()
+	cam.up = mgl.Vec3{0, 1, 0}
 
 	// Uniforms
 	cam.projectionUniform = gl.GetUniformLocation(program, gl.Str("projection\x00"))

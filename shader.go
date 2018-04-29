@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"io/ioutil"
 	"github.com/go-gl/gl/v4.1-core/gl"
+	"io/ioutil"
+	"strings"
 )
 
 // Load a file given its name

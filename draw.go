@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Romaingin/go-opengl-engine/object"
 	"github.com/go-gl/gl/v4.1-core/gl"
+	"github.com/rginestou/go-opengl-engine/object"
 )
 
 // Uses OpenGL to draw the scene objects
@@ -14,12 +14,12 @@ func draw(s *Scene) {
 	s.camera.computeView()
 
 	// Loop through objects and draw them
-	for _, el := range(s.elements) {
+	for _, el := range s.elements {
 		drawObject(el.GetObject())
 	}
 
 	// Disable VAO
-	gl.BindVertexArray(0);
+	gl.BindVertexArray(0)
 
 	// Maintenance
 	s.window.SwapBuffers()

@@ -6,7 +6,7 @@ import (
 
 type Clock struct {
 	previousTime float64
-	elapsed float64
+	elapsed      float64
 }
 
 func (c *Clock) init() {
