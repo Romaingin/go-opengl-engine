@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.2/glfw"
+	mgl "github.com/go-gl/mathgl/mgl32"
 	"github.com/rginestou/go-opengl-engine/v1"
 	"github.com/rginestou/go-opengl-engine/v1/input"
 )
@@ -12,26 +13,57 @@ import (
 type game struct {
 	cam            engine.Camera
 	camProjUniform int32
+	camOrthUniform int32
 	camViewUniform int32
 
+	gui     GUI
+	texture uint32
+
 	basicProgram uint32
-	elements     []element
+	elements     []Element
 }
 
 func (g *game) init() {
-	// Init camera
-	g.cam.Init(windowWidth, windowHeight)
-
 	// Load shaders
 	g.basicProgram = engine.CreateShaderProgram("shaders/basic.vs", "shaders/basic.fs")
 
 	// Load scene elements
-	g.elements = make([]element, 1)
-	g.elements[0].create(g.basicProgram, "lib/mesh/cube.obj")
+	g.elements = make([]Element, 1)
+	g.elements[0].createFromFile(g.basicProgram, "lib/mesh/cube.obj")
 
-	// Camera Uniforms
+	// Load GUI
+	g.gui.buttons = make([]Button, 1)
+	vertices := []float32{
+		0.0, 0.0, 0.0,
+		1.0, 0.0, 0.0,
+		0.0, 1.0, 0.0,
+		1.0, 1.0, 0.0,
+		1.0, 0.0, 0.0,
+		0.0, 1.0, 0.0,
+	}
+	uvs := []float32{
+		0.0, 0.0,
+		1.0, 0.0,
+		0.0, 1.0,
+		1.0, 1.0,
+		1.0, 0.0,
+		0.0, 1.0,
+	}
+	g.gui.buttons[0].create(g.basicProgram, vertices, nil, uvs)
+
+	// Camera Set up
+	g.cam.SetEyeAim(mgl.Vec3{2, 2.5, 2}, mgl.Vec3{-1, -1, -1})
+	g.cam.ComputeProjection(windowWidth, windowHeight)
+	g.cam.ComputeOrtho(windowWidth, windowHeight)
+
 	gl.UseProgram(g.basicProgram)
+
+	g.texture = engine.TextureFromFile("lib/img/rock.png")
+	textureUniform := gl.GetUniformLocation(g.basicProgram, gl.Str("tex\x00"))
+	gl.Uniform1i(textureUniform, 0)
+
 	g.camProjUniform = gl.GetUniformLocation(g.basicProgram, gl.Str("projection\x00"))
+	g.camOrthUniform = gl.GetUniformLocation(g.basicProgram, gl.Str("ortho\x00"))
 	g.camViewUniform = gl.GetUniformLocation(g.basicProgram, gl.Str("view\x00"))
 	gl.UniformMatrix4fv(g.camProjUniform, 1, false, &g.cam.Projection[0])
 }
@@ -43,9 +75,17 @@ func (g *game) Draw(dt float64) {
 	// Update camera view
 	gl.UniformMatrix4fv(g.camViewUniform, 1, false, &g.cam.View[0])
 
-	// Loop through objects
-	for el := range g.elements {
-		g.elements[el].draw()
+	// Loop through Scene elements
+	// for el := range g.elements {
+	// g.elements[el].draw()
+	// }
+
+	gl.ActiveTexture(gl.TEXTURE0)
+	gl.BindTexture(gl.TEXTURE_2D, g.texture)
+
+	// Loop through GUI elements
+	for b := range g.gui.buttons {
+		g.gui.buttons[b].draw()
 	}
 }
 
@@ -75,6 +115,13 @@ func (g *game) keyboardProcess(dt float32) {
 
 	if input.KeyPressed(glfw.KeyA) {
 		g.cam.MoveSide(-8.0 * dt)
+	}
+
+	s := input.Scroll()
+	if s != 0.0 {
+		eye := g.cam.Eye
+		aim := g.cam.Aim
+		g.cam.SetEyeAim(eye.Add(aim.Mul(float32(s)*dt*30)), aim)
 	}
 }
 

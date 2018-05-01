@@ -6,20 +6,28 @@ import (
 	engine "github.com/rginestou/go-opengl-engine/v1"
 )
 
-type element struct {
+// Element ...
+type Element struct {
 	object       engine.Object
 	modelMatrix  mgl.Mat4
 	modelUniform int32
 }
 
-func (e *element) create(program uint32, filePath string) {
+func (e *Element) create(program uint32, vertices []float32, normals []float32, uvs []float32) {
 	e.modelMatrix = mgl.Ident4()
 	e.modelUniform = gl.GetUniformLocation(program, gl.Str("model\x00"))
 
-	e.object.Create(filePath)
+	e.object.Create(vertices, normals, uvs)
 }
 
-func (e *element) draw() {
+func (e *Element) createFromFile(program uint32, filePath string) {
+	e.modelMatrix = mgl.Ident4()
+	e.modelUniform = gl.GetUniformLocation(program, gl.Str("model\x00"))
+
+	e.object.CreateFromFile(filePath)
+}
+
+func (e *Element) draw() {
 	gl.UniformMatrix4fv(e.modelUniform, 1, false, &e.modelMatrix[0])
 
 	e.object.Draw()

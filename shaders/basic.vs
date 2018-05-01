@@ -6,8 +6,10 @@ uniform mat4 model;
 
 in vec3 vert;
 in vec3 norm;
+in vec2 uv;
 
 out vec3 color;
+out vec2 UV;
 
 void main() {
 	// Set vertex position
@@ -18,4 +20,6 @@ void main() {
 	vec3 base_color = vec3(0.2, 0.5, 0.7);
 	float d = (dot(light, norm) + 1.0) * 0.1;
 	color = base_color + vec3(d, d, d);
+
+	UV = uv;
 }

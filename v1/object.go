@@ -12,12 +12,19 @@ type Object struct {
 }
 
 // Create ...
-func (o *Object) Create(filePath string) {
+func (o *Object) Create(vertices []float32, normals []float32, uvs []float32) {
+	// Create the Array Object based on the mesh
+	o.vao = makeIndexedVAO(vertices, normals, uvs)
+	o.triCount = int32(len(vertices) / 3)
+}
+
+// CreateFromFile ...
+func (o *Object) CreateFromFile(filePath string) {
 	g, err := LoadGeometryFormFile(filePath)
 	check.Panic(err)
 
 	// Create the Array Object based on the mesh
-	o.vao = makeIndexedVAO(g.vertices, g.normals)
+	o.vao = makeIndexedVAO(g.vertices, g.normals, nil)
 	o.triCount = int32(len(g.vertices) / 3)
 }
 

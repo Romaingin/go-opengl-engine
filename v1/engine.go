@@ -24,8 +24,8 @@ type Engine struct {
 
 // Displayer ...
 type Displayer interface {
-	Draw(float64)
 	Update(float64)
+	Draw(float64)
 }
 
 var window *glfw.Window
@@ -82,8 +82,8 @@ func (e *Engine) Loop(dis Displayer) {
 		// Get time
 		cl.tick()
 
-		dis.Draw(cl.getElapsed())
 		dis.Update(cl.getElapsed())
+		dis.Draw(cl.getElapsed())
 
 		window.SwapBuffers()
 

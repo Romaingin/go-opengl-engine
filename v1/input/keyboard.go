@@ -4,7 +4,7 @@ import (
 	"github.com/go-gl/glfw/v3.2/glfw"
 )
 
-// Alter the keys' state
+// KeyCallBack alters the keys' state
 func KeyCallBack(w *glfw.Window, k glfw.Key, st int, a glfw.Action, mk glfw.ModifierKey) {
 	if a == glfw.Press {
 		s.keys[k] = true
